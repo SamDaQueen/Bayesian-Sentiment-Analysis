@@ -4,7 +4,7 @@
 
 <div>
 
-<p><em>The base code in 'bt.py' other than the 'naive_bayes_classify()' and 'markov_model_classify()' function was provided by the professor of the course.</em></p>
+<p><em>The base code in 'bt.py' other than the 'naive_bayes_classify()' and 'markov_model_classify()' function was provided by the professor of the course.</em></p><br>
 
 <h3>Sentiment analysis of movie reviews</h3>
 <p>The model is trained on data from www.kaggle.com/c/sentiment-analysis-on-movie-reviews. It predicts the most likely sentiment of a movie rating 
@@ -36,7 +36,7 @@ happy meh<br>
 -2.995732273553991<br>
 <h4>Explanation</h4>
 <p>For each sentence to be classified from input file, there is one line each for the sentiment class and the logarithm probability obtained
-from bayesian model and the same obtained from markovian model respectively. Hence, there are 4 lines for each sentence.</p>
+from bayesian model and the same obtained from markovian model respectively. Hence, there are 4 lines for each sentence.</p><br>
 
 <h3>Files included</h3>
 
