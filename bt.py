@@ -164,16 +164,16 @@ def naive_bayes_classify(info, sentence):
     for s in range(CLASSES):  # get probability of each sentiment for sentence
         prob_sentiment = info.sentiment_counts[s] / \
             sum(info.sentiment_counts)
-        prob_sentence = 1
+        prob_sentence = 0
         for word in words:  # iterate through each word to get probability
             try:
                 prob_word = info.word_counts[s][word] / \
                     sum(info.word_counts[s].values())
             except KeyError:
                 prob_word = OUT_OF_VOCAB_PROB  # word not present in sentiment
-            prob_sentence *= prob_word
-        prob_sentiment_sentence.append(
-            math.log(prob_sentiment*prob_sentence))
+            # use log to avoid multiplying
+            prob_sentence += math.log(prob_word)
+        prob_sentiment_sentence.append(math.log(prob_sentiment)+prob_sentence)
 
     # best class, log probability
     return np.argmax(prob_sentiment_sentence), max(prob_sentiment_sentence)
@@ -187,7 +187,7 @@ def markov_model_classify(info, sentence):
     for s in range(CLASSES):  # get probability of each sentiment for sentence
         prob_sentiment = info.sentiment_counts[s] / \
             sum(info.sentiment_counts)
-        prob_sentence = 1
+        prob_sentence = 0
         # iterate through each word to get probability
         for word_num in range(len(words)):
             if word_num == 0:  # no bigram for first word
@@ -196,7 +196,8 @@ def markov_model_classify(info, sentence):
                         sum(info.word_counts[s].values())
                 except KeyError:
                     prob_word = OUT_OF_VOCAB_PROB  # word not present in sentiment
-                prob_sentence *= prob_word
+                # use log to avoid multiplying
+                prob_sentence += math.log(prob_word)
             else:
                 bigram = (words[word_num-1], words[word_num])
                 try:
@@ -204,9 +205,9 @@ def markov_model_classify(info, sentence):
                         (info.bigram_denoms[s][words[word_num-1]])
                 except KeyError:
                     prob_word = OUT_OF_VOCAB_PROB  # bigram not present in sentiment
-                prob_sentence *= prob_word
-        prob_sentiment_sentence.append(
-            math.log(prob_sentiment*prob_sentence))
+                # use log to avoid multiplying
+                prob_sentence += math.log(prob_word)
+        prob_sentiment_sentence.append(math.log(prob_sentiment)+prob_sentence)
 
     # best class, log probability
     return np.argmax(prob_sentiment_sentence), max(prob_sentiment_sentence)
